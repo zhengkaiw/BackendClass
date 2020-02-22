@@ -28,7 +28,7 @@ public class Problem2 {
         if (str.length() < 2) {
             return str;
         }
-        for (int i = 0; i < str.length(); i++) {
+        for (int i = 0; i < str.length() - 1; i++) {
             helper(str, i, i);
             helper(str, i, i + 1);
         }
@@ -48,7 +48,7 @@ public class Problem2 {
 
     public static void main(String[] args) {
         String s1 = "aba";
-        String s2 = "cababad";
+        String s2 = "ca";
         Problem2 p = new Problem2();
         System.out.println(p.isPalindrome(s1));
         System.out.println(p.isPalindrome(s2));
