@@ -8,11 +8,11 @@
 * Reverse a String: **Two pointers**.
 * Difference betweeen StringBuilder, StringBuffer and String: 
 
-> *StringBuffer* is **synchronized**, which can be accessed and modified by multipe threads. 
+ *StringBuffer* is **synchronized**, which can be accessed and modified by multipe threads. 
 
-> *StringBuilder* is not **synchronized**, which can be accessed and modified by only one thread. Faster than StringBuffer.
+ *StringBuilder* is not **synchronized**, which can be accessed and modified by only one thread. Faster than StringBuffer.
 
--
+---
 #### 2.LinkedList questions: Reverse a linked list recursively(in-place) and iteratively, delete a node from linked list, find the nth node, find the nth node from the end, test if a linked list has a cycle, write test cases
 
 * Reverse a linked list:
@@ -38,7 +38,7 @@ Iteratively: **Node prev, cur, temp**
 * Finde the nth node from the end: **traverse, count**
 * Cycle: **two pointers, one fast and the other slow**
 
--
+---
 #### 3.What is immutable, Implement an immutable class(e.g. myDateTime)
 
 Immutable: Object whose internal state remains constant after it has been entirely created. Once an object is created, we cannot change its content.
@@ -52,10 +52,7 @@ Immutable class:
 * Initialize all the fields via a constructor performing deep copy.
 * Perform cloning of objects in the getter methods to return a copy rather than returning the actual object reference.
 
--
-#### 4.What are volatile, synchronized, atomic
-
--
+---
 #### 5.What are some ways to implement a singleton in Java
 
 1.**Eager initialization**
@@ -111,7 +108,7 @@ This is also a sub part of Eager initialization. The only difference is object i
 1. May lead to resource wastage. Because instance of class is created always, whether it is required or not.    
 2. CPU time is also wasted in creation of instance if it is not required.
 
-3.Lazy initialization.
+3.**Lazy initialization**.
 
 	public class Singleton
 	{
@@ -134,8 +131,132 @@ This is also a sub part of Eager initialization. The only difference is object i
 			return instance;
 		}
 	}
+	
+Object is created only if it is needed. This may prevent resource wastage. It can be used in a single threaded environment because multiple threads can break singleton property because they can access get instance method simultaneously and create multiple objects.
 
--
+**Pros:**    
+1. Object is created only if it is needed. It may overcome resource overcome and wastage of CPU time.    
+2. Exception handling is also possible in method.
+
+**Cons:**    
+1. Every time a condition of null has to be checked.    
+2. Instance can't be accessed directly.    
+3. In multithreaded envrionment, it may break singleton property.
+
+4.**Thread Safe Singleton**
+
+	public class Singleton
+	{
+		private static Singleton instance;
+		
+		private Singleton()
+		{
+			
+		}
+		
+		// synchronized method to control simultaneous access
+		synchronized public static Singleton getInstance()
+		{
+			if (instance == null)
+			{
+				// if instance is null, initialize
+				instance = new Singleton();
+			}
+			return instance;
+		}
+	}
+	
+**Pros:**    
+1. Lazy initialization is possible.    
+2. It is also thread safe.
+
+**Cons:**    
+1.getInstance() method is synchronized so it causes slow performance as multiple threads can't access it simultaneously.
+
+5.**Lazy initialization with Double check locking**
+
+	public class Singleton
+	{
+		private static Singleton instance;
+		
+		private Singleton()
+		{
+		}
+		
+		public static Singleton getInstance()
+		{
+			if (instance == null)
+			{
+				// synchronized block to remove overhead
+				synchronized (Singleton.class)
+				{
+					if (instance == null)
+					{
+						// if instance is null, initialize
+						instance = new Singleton();
+					}
+				}
+			}
+			return instance;
+		}	
+	}
+	
+getInstance is not synchronized but the block which creates instance is synchronized so that minimum number of threads have to wait and that's only for first time.
+
+**Pros:**    
+1. Lazy initialization is possible.    
+2. It is also thread safe.    
+3. Performance overhead gets reduced because of synchronized keyword.
+
+**Cons:**    
+1. First time, it can affect performance.    
+As cons. of double check locking method is bearable so it can be used for high performance multi-threaded applications.
+
+6.**Bill Pugh Singleton Implementation**
+
+	public class Singleton
+	{
+		private Singleton()
+		{
+		}
+		
+		// Inner class to provid instance of class
+		private static class BillPughSingleton
+		{
+			private static final Singleton INSTANCE = new Singleton();
+		}
+		
+		public static Singleton getInstance()
+		{
+			return BillPughSingleton.INSTANCE;
+		}
+	}
+When the singleton class is loaded, inner class is not loaded and hence doesn't create object when loading the class. Inner class is created only when getInstance() method is called. So it may seem like eager initialization but it is lazy initialization.    
+This is the most widely used approach as it doesn't use synchronization.
+
+---
+#### 6. Implement a counting semaphore
+
+A Semaphore is a thread synchronization construct that can be used either to send signals between threads to avoid missed signals, or to guard a critical section like you would with a lock.
+
+	public class CountingSemaphore
+	{
+		private int signals = 0;
+		
+		public synchronized void take() 
+		{
+			this.signals++;
+			this.notify();
+		}
+		
+		public synchronized void release() throws InterruptedException
+		{
+			while (this signals == 0) wait();
+			this.signals--;
+			this.notify();
+		}
+	}
+---
 #### 10.Level-order BFS on a binary tree
 
 BFS:
@@ -182,7 +303,5 @@ DFS:
         travel(curr.left, result, level + 1);
         travel(curr.right, result, level + 1);
     }
-
-
-
--
+    
+---

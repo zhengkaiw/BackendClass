@@ -15,14 +15,18 @@ class CounterThread extends Thread {
 
     protected Counter counter = null;
 
+    private CountingSemaphore cs;
+
     public CounterThread(Counter counter, String name){
         this.counter = counter;
         this.setName(name);
     }
 
     public void run() {
+        CountingSemaphore semaphore = new CountingSemaphore();
         for(int i=0; i<10; i++){
             try {
+                //semaphore.take();
                 sleep(1);
             } catch (InterruptedException e) {
                 e.printStackTrace();
