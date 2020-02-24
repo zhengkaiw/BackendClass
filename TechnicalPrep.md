@@ -17,27 +17,68 @@
 
 * Reverse a linked list:
 
-Recursively: **helper**
+Recursively: **helper(DFS)**
 
-	helper(ListNode head, ListNode temp)    
-	if (head == null) return temp;        
-	ListNode next = head.next;    
-	head.next = temp;
-	return helper(next, head);
+	return helper(head, null);
+	
+	public ListNode helper(ListNode head, ListNode temp) {
+		if (head == null) return temp;
+		ListNode next = head.next;
+		head.next = temp;
+		return helper(next, head);
+	}
 
 Iteratively: **Node prev, cur, temp**
  
-	prev = null; cur = head;   
-	ListNode temp = cur.next;   
-	cur.next = prev;   
-	prev = cur;   
-	cur = temp;
+	ListNode prev = null;
+	ListNode cur = head;
+	
+	while (cur != null) {
+		ListNode temp = cur.next;
+		cur.next = prev;
+		prev = cur;
+		cur = temp;
+	}
+	return prev;
 
-* Delete a node: **traverse**
-* Find the nth node: **traverse**
-* Finde the nth node from the end: **traverse, count**
+* Delete a node: 
+
+		ListNode dummy = new ListNode(-1);
+		dummy.next = head;
+		ListNode cur = head, prev = dummy;
+		while (cur != null) {
+			if (cur.val == val) {
+				prev.next = cur.next;
+			} else {
+				prev = cur;
+			}
+			cur = cur.next;
+		}
+		return dummy.next;
+	
+* Find the nth node:
+		
+		if (n == 1) {
+            return head;
+        }
+        return findNthNode(head.next, n - 1);
+* Finde the nth node from the end:
+
+		return findNthNode(reverseLinkedListRecursively(head), n);
 * Cycle: **two pointers, one fast and the other slow**
 
+		if (head == null) return false;
+		
+		ListNode slow = head;
+		ListNode fast = head;
+		
+		while (fast.next != null && fast.next.next != null) {
+			slow = slow.next;
+			fast = fast.next.next;
+			
+			if (slow == fast) return true;
+		}
+		return false;
 ---
 #### 3.What is immutable, Implement an immutable class(e.g. myDateTime)
 
@@ -52,6 +93,27 @@ Immutable class:
 * Initialize all the fields via a constructor performing deep copy.
 * Perform cloning of objects in the getter methods to return a copy rather than returning the actual object reference.
 
+		public final class MyDateTime
+		{
+			final String name;
+			final String date;
+			
+			public MyDateTime(String name, String date)
+			{
+				this.name = name;
+				this.date = date;
+			}
+			
+			public String getName()
+			{
+				return name;
+			}
+			
+			public String getDate()
+			{
+				return date;
+			}
+		}
 ---
 #### 5.What are some ways to implement a singleton in Java
 
@@ -305,3 +367,6 @@ DFS:
     }
     
 ---
+#### 13.Write a method receiving a stream of integers, caching the last 10 min of data and returning a number if it's less than the current input.
+
+> CacheStream.java
