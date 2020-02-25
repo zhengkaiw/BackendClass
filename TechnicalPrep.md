@@ -80,6 +80,7 @@ Iteratively: **Node prev, cur, temp**
 		}
 		return false;
 ---
+
 #### 3.What is immutable, Implement an immutable class(e.g. myDateTime)
 
 Immutable: Object whose internal state remains constant after it has been entirely created. Once an object is created, we cannot change its content.
@@ -114,6 +115,20 @@ Immutable class:
 				return date;
 			}
 		}
+		
+---
+
+#### 4.What are volatile, synchronized, atomic    
+
+* Volatile:
+	The Java keyword `volatile` is used to mark a Java variable as "being stored in main memory". More precisely that means, that every read of a volatile variable will be read from the computer's main memory, and not from the CPU cache, and that every write to a volatile variable will be written to main memory, and not just to the CPU cache.
+
+* Synchronized:    
+	Synchronized blocks in Java are marked `synchroized` with the synchronized keyword. A synchronized block in Java is synchronized on some object. All synchronized blocks synchronized on the same object can only have one thread executing inside them at the same time. All other threads attempting to enter the synchronized block are blocked until the thread inside the synchronized block exits the block.
+	
+* Atomic:
+ 
+
 ---
 #### 5.What are some ways to implement a singleton in Java
 
