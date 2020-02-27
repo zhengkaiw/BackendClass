@@ -17,29 +17,29 @@
 
 * Reverse a linked list:
 
-Recursively: **helper(DFS)**
+	Recursively: **helper(DFS)**
 
-	return helper(head, null);
-	
-	public ListNode helper(ListNode head, ListNode temp) {
-		if (head == null) return temp;
-		ListNode next = head.next;
-		head.next = temp;
-		return helper(next, head);
-	}
+		return helper(head, null);
+		
+		public ListNode helper(ListNode head, ListNode temp) {
+			if (head == null) return temp;
+			ListNode next = head.next;
+			head.next = temp;
+			return helper(next, head);
+		}
 
-Iteratively: **Node prev, cur, temp**
- 
-	ListNode prev = null;
-	ListNode cur = head;
-	
-	while (cur != null) {
-		ListNode temp = cur.next;
-		cur.next = prev;
-		prev = cur;
-		cur = temp;
-	}
-	return prev;
+	Iteratively: **Node prev, cur, temp**
+	 
+		ListNode prev = null;
+		ListNode cur = head;
+		
+		while (cur != null) {
+			ListNode temp = cur.next;
+			cur.next = prev;
+			prev = cur;
+			cur = temp;
+		}
+		return prev;
 
 * Delete a node: 
 
@@ -333,6 +333,14 @@ A Semaphore is a thread synchronization construct that can be used either to sen
 			this.notify();
 		}
 	}
+---
+
+#### 7.JVM/GC questions
+
+---
+
+#### 8.Checked vs unchecked exceptions, finalize.
+
 ---
 #### 10.Level-order BFS on a binary tree
 
